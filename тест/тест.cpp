@@ -3,6 +3,6 @@
 using namespace std;
 int main()
 {
-    std::cout << "Matvey natural\n";
+   cout << "Matvey natural\n";
 }
 
