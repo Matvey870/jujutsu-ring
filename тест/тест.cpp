@@ -21,7 +21,7 @@ class magic_weapon : public weapon {
 };
 
 int main()
-{
+{//пример выгрузки
     cout << "МАТВЕЙ НАТУРАЛ!\n";//dfgdfgdfg
 	int lvl = 0;
 	int exp = 0;
