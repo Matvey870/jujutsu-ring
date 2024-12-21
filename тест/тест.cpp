@@ -1,8 +1,6 @@
 ﻿#include <iostream>
 using namespace std;
-#include <iostream>
-using namespace std;
-
+// Кусок боёвки
 class Character {
 public:
     string name;
@@ -36,6 +34,8 @@ public:
         this->atk = atk;
     }
 };
+// конец куска
+// противники
 class skeleton : protected opponent {
     skeleton(string name, int HP, int atk) : opponent(name, HP, atk) {}
 };
@@ -88,6 +88,8 @@ class Igris : protected BOSS {
 class Xenoc : protected BOSS {
     Xenoc(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
 };
+// конец противников
+// оружие
 class weapon {
 public:
     int dmg;
@@ -111,10 +113,9 @@ class magic_weapon : public weapon {
     string soulBlade;
 	string stick;
 };
-
-int main()
-<<<<<<< HEAD
-{
+// конец оружия
+// продолжение боёвки
+int main() {
 setlocale(LC_ALL, "RU");
     Character player("Игрок", 100, 10, 20);
     Character enemy("Противник", 100, 15, 0);
@@ -135,17 +136,13 @@ setlocale(LC_ALL, "RU");
             cout << enemy.name << " повержен\n";
             break;
         }
-
-
         enemy.attack(player);
         if (!player.Alive()) {
             cout << player.name << " Вы погибли\n";
             break;
         }
     }
-{
-        //пример выгрузки
-    cout << "МАТВЕЙ НАТУРАЛ!\n";//dfgdfgdfg
+// конец боёвки
 	int lvl = 0;
 	int exp = 0;
 	int dexterity = 0;
