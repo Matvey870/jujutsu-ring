@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
 #include <ctime>
 #include <string>
@@ -13,9 +13,11 @@ public:
     int experience;
     int level;
     int skillPoints;
+
     Player(int startX, int startY) : posX(startX), posY(startY), maxHp(100), hp(100),
         maxMana(50), mana(50), damage(10), experience(0),
         level(1), skillPoints(0) {}
+
     void levelUp() {
         while (experience >= 100) {
             experience -= 100;
@@ -28,6 +30,7 @@ public:
             cout << "ты поднял уровень твой уровень в данный момент -  " << level << "\n";
         }
     }
+
     void useAbility(const string& abilityName) {
         if (abilityName == "Фаэрболл") {
             if (mana >= 10) {
@@ -53,6 +56,7 @@ public:
         }
     }
 };
+
 class Enemy {
 public:
     int hp;
@@ -123,7 +127,7 @@ public:
             displayMap();
             cout << "хп " << player.hp << "/" << player.maxHp << " | мана " << player.mana << "/" << player.maxMana
                 << " | EXP: " << player.experience << "/100 | уровень " << player.level << "\n";
-            cout << "куда хочешь сходить ";
+           cout << "куда хочешь сходить ";
             cin >> input;
 
             if (input == 'x') {
