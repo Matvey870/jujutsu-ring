@@ -1,182 +1,228 @@
 ﻿#include <iostream>
+#include <vector>
+#include <ctime>
+#include <string>
 using namespace std;
-// Кусок боёвки
-class Character {
-public:
-    string name;
-    int health;
-    int atk;
-    int abp;
 
-    Character(string n, int hp, int ap, int abp)
-        : name(n), health(hp), atk(ap), abp(abp) {}
-    void attack(Character& target) {
-        target.health -= atk;
-        cout << name << " атакует " << target.name << " на " << atk << " урона\n";
-    }
-    void Ability(Character& target) {
-        target.health -= abp;
-        cout << name << " использует способность на " << target.name << " на " << abp << " урона\n";
-    }
-    bool Alive() {
-        return health > 0;
-    }
-};
-class opponent {
-protected:
-    int HP;
-    string name;
-    int atk;
+class Player {
 public:
-    opponent(string name, int HP, int atk) {
-        this->name = name;
-        this->HP = HP;
-        this->atk = atk;
-    }
-};
-// конец куска
-// противники
-class skeleton : protected opponent {
-    skeleton(string name, int HP, int atk) : opponent(name, HP, atk) {}
-};
-class goblin : protected opponent {
-    goblin(string name, int HP, int atk) : opponent(name, HP, atk) {}
-};
-class ork : protected opponent {
-    ork(string name, int HP, int atk) : opponent(name, HP, atk) {}
-};
-class hunter : protected opponent {
-    hunter(string name, int HP, int atk) : opponent(name, HP, atk) {}
-};
-class knight : protected opponent {
-    knight(string name, int HP, int atk) : opponent(name, HP, atk) {}
-};
-class FUdog : protected opponent {
-    FUdog(string name, int HP, int atk) : opponent(name, HP, atk) {}
-};
-class BOSS {
-protected:
-    int HP;
-    int atk;
-    string name;
-    int resist;
-    BOSS(string name, int HP, int atk, int resist) {
-        this->name = name;
-        this->HP = HP;
-        this->atk = atk;
-        this->resist = resist;
-    }
-};
-class Horseman : protected BOSS {
-    Horseman(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-class KingGoblin : protected BOSS {
-    KingGoblin(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-class KingOrk : protected BOSS {
-    KingOrk(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-class KingSkeleton : protected BOSS {
-    KingSkeleton(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-class DarkKing : protected BOSS {
-    DarkKing(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-class Igris : protected BOSS {
-    Igris(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-class Xenoc : protected BOSS {
-    Xenoc(string name, int HP, int atk, int resist) : BOSS(name, HP, atk, resist) {}
-};
-// конец противников
-// оружие
-class weapon {
-public:
-    int dmg;
-    int lvl;
-    int lvlOfSkill;
-    virtual void atack() = 0;
-    virtual void upgrade() = 0;
-    string rarity;
-};
-class meele_weapon : public weapon {
-	string name;
-	//meele_weapon knife{"demon slayer knife", 100, 20, 34}
-};
-class range_wepon : public weapon {
-    string bow;
-	string Crossbow;
-	string steelBow;
-	string bigBow;
-};
-class magic_weapon : public weapon {
-    string soulBlade;
-	string stick;
-};
-// конец оружия
-// продолжение боёвки
-int main() {
-setlocale(LC_ALL, "RU");
-    Character player("Игрок", 100, 10, 20);
-    Character enemy("Противник", 100, 15, 0);
-    while (player.Alive() && enemy.Alive()) {
-        int choice;
-        cout << "\nВаш ход\n 1 - Обычная атака\n 2 - Способность\n\n";
-        cin >> choice;
-        if (choice == 1) {
-            player.attack(enemy);
+    int posX, posY;
+    int hp, maxHp;
+    int mana, maxMana;
+    int damage;
+    int experience;
+    int level;
+    int skillPoints;
+    Player(int startX, int startY) : posX(startX), posY(startY), maxHp(100), hp(100),
+        maxMana(50), mana(50), damage(10), experience(0),
+        level(1), skillPoints(0) {}
+    void levelUp() {
+        while (experience >= 100) {
+            experience -= 100;
+            level++;
+            skillPoints++;
+            maxHp += 10;
+            maxMana += 5;
+            hp = maxHp;
+            mana = maxMana;
+            cout << "ты поднял уровень твой уровень в данный момент -  " << level << "\n";
         }
-        else if (choice == 2) {
-            player.Ability(enemy);
+    }
+    void useAbility(const string& abilityName) {
+        if (abilityName == "Фаэрболл") {
+            if (mana >= 10) {
+                mana -= 10;
+                cout << "ты использовал фаэрбол\n";
+            }
+            else {
+                cout << "нехватает маны\n";
+            }
+        }
+        else if (abilityName == "Хилл") {
+            if (mana >= 15) {
+                mana -= 15;
+                hp = min(hp + 25, maxHp);
+                cout << "ты использовал хилл на 25\n";
+            }
+            else {
+                cout << "нехватает маны\n";
+            }
         }
         else {
-            cout << "Таково выбора нет\n";
-        }
-        if (!enemy.Alive()) {
-            cout << enemy.name << " повержен\n";
-            break;
-        }
-        enemy.attack(player);
-        if (!player.Alive()) {
-            cout << player.name << " Вы погибли\n";
-            break;
+            cout << "такой способности нет\n";
         }
     }
-// конец боёвки
-	int lvl = 0;
-	int exp = 0;
-	int dexterity = 0;
-	int intelligence = 0;
-	int power = 0;
-	int luck = 0;
+};
+class Enemy {
+public:
+    int hp;
+    int damage;
 
-	if exp = 100 {
-		cout << "У вас новый уровень";
-		cout << "Ветка прокачки";
-		cout << "1-Прокочать силу";
-		cout << "2-Прокочать интилект";
-		cout << "3-Прокочать ловкость";
-		cout << "4-Прокочать удача";
+    Enemy() : hp(50), damage(8) {}
 
-		int x;
-		switch (x)
-		{
-		case 1:
-			cout << "Вы прокачиваете силу";
-			int power = 0 + 1;
+    bool isDead() const {
+        return hp <= 0;
+    }
+};
 
-		case 2:
-			cout << "Вы прокочали интелект";
-			int intelligence = 0 + 1;
+class Game {
+public:
+    const int mapWidth = 30;
+    const int mapHeight = 15;
+    vector<vector<char>> map;
+    Player player;
+    bool inBattle = false;
 
-		case 3:
-			cout << "Вы прокочали ловкость";
-			int dextrity = 0 + 1;
+    Game() : player(mapWidth / 2, mapHeight / 2) {
+        generateMap();
+    }
 
-		case 4:
-			cout << "Вы прокочали удачу";
-			int luck = 0 + 1;
-			break;
-		}
-	}
+    void generateMap() {
+        srand(static_cast<unsigned int>(time(0)));
+
+        map.resize(mapHeight, vector<char>(mapWidth, '.'));
+        for (int i = 0; i < mapHeight; i++) {
+            for (int j = 0; j < mapWidth; j++) {
+                if (std::rand() % 10 == 0) {
+                    map[i][j] = '#';
+                }
+                else if (std::rand() % 50 == 0) {
+                    map[i][j] = 'E';
+                }
+            }
+        }
+        map[mapHeight - 1][mapWidth - 1] = '*';
+    }
+
+    void displayMap() {
+        for (int y = 0; y < mapHeight; y++) {
+            for (int x = 0; x < mapWidth; x++) {
+                if (x == player.posX && y == player.posY) {
+                    cout << "[]";
+                }
+                else if (map[y][x] == '*') {
+                    cout << "(***)";
+                }
+                else if (map[y][x] == 'E') {
+                    cout << "E ";
+                }
+                else {
+                    cout << map[y][x];
+                }
+            }
+            cout << "\n";
+        }
+    }
+
+    void start() {
+        char input;
+        cout << "для передвижения w a s d\n";
+        cout << "на x выход из игры\n";
+
+        while (true) {
+            displayMap();
+            cout << "хп " << player.hp << "/" << player.maxHp << " | мана " << player.mana << "/" << player.maxMana
+                << " | EXP: " << player.experience << "/100 | уровень " << player.level << "\n";
+            cout << "куда хочешь сходить ";
+            cin >> input;
+
+            if (input == 'x') {
+                cout << "покинул игру\n";
+                break;
+            }
+
+            if (!inBattle) {
+                movePlayer(input);
+            }
+
+            if (map[player.posY][player.posX] == '*') {
+                cout << "Вы вошли в портал\n";
+                nextLocation();
+            }
+            else if (map[player.posY][player.posX] == 'E') {
+                cout << "ты встретился взглядом с противником\n";
+                startBattle();
+            }
+        }
+    }
+
+    void movePlayer(char input) {
+        int newX = player.posX;
+        int newY = player.posY;
+
+        switch (input) {
+        case 'w': newY--; break;
+        case 's': newY++; break;
+        case 'a': newX--; break;
+        case 'd': newX++; break;
+        default: cout << "так ходить нельзя\n"; return;
+        }
+
+        if (newX >= 0 && newX < mapWidth && newY >= 0 && newY < mapHeight && map[newY][newX] != '#') {
+            player.posX = newX;
+            player.posY = newY;
+        }
+        else {
+            cout << "Ты неможешь туда пойти\n";
+        }
+    }
+
+    void startBattle() {
+        inBattle = true;
+        Enemy enemy;
+        while (player.hp > 0 && !enemy.isDead()) {
+            cout << "хп врага " << enemy.hp << " | твоё хп " << player.hp << "\n";
+            cout << "выбири одну из способностей";
+            int choice;
+            cin >> choice;
+
+            if (choice == 1) {
+                cout << "ты атоковал врага" << "\n";
+                enemy.hp -= player.damage;
+            }
+            else if (choice == 2) {
+                player.useAbility("фаэрбол");
+                if (player.mana >= 10) {
+                    enemy.hp -= 20;
+                }
+            }
+            else if (choice == 3) {
+                player.useAbility("хил");
+            }
+            else {
+                cout << "таково нет" << "\n";
+            }
+
+            if (!enemy.isDead()) {
+                cout << "тебя атакуют" << "\n";
+                player.hp -= enemy.damage;
+            }
+        }
+
+        if (player.hp <= 0) {
+            cout << "Вы погибли" << "\n";
+            exit(0);
+        }
+        else {
+            cout << "Ты победил врага" << "\n";
+            player.experience += 50;
+            player.levelUp();
+            map[player.posY][player.posX] = '.';
+        }
+
+        inBattle = false;
+    }
+
+    void nextLocation() {
+        cout << "телепорт на следующий этаж" << "\n";
+        generateMap();
+        player.posX = 0;
+        player.posY = 0;
+    }
+};
+
+int main() {
+    Game game;
+    game.start();
+    return 0;
 }
