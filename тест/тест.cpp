@@ -224,6 +224,18 @@ public:
                     enemy.hp -= 20;
                 }
             }
+            else if (choice == 4) {
+                player.useAbility("Огненная стрела");
+                if (player.mana >= 20) {
+                    enemy.hp -= 80;
+                }
+            }
+            else if (choice == 5) {
+                player.useAbility("прописать двоечку");
+                if (player.mana >= 1) {
+                    enemy.hp -= 999;
+                }
+            }
             else if (choice == 3) {
                 player.useAbility("Хилл");
             }
