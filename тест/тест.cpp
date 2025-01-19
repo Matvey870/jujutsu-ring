@@ -17,7 +17,6 @@ public:
     Player(int startX, int startY) : posX(startX), posY(startY), maxHp(100), hp(100),
         maxMana(50), mana(50), damage(10), experience(0),
         level(1), skillPoints(0) {}
-
     void levelUp() {
         setlocale(LC_ALL, "Russian");
         while (experience >= 100) {
@@ -31,7 +30,6 @@ public:
             cout << "ты поднял уровень твой уровень в данный момент -  " << level << "\n";
         }
     }
-
     void useAbility(const string& abilityName) {
         setlocale(LC_ALL, "Ru");
         if (abilityName == "Фаэрболл") {
@@ -52,7 +50,6 @@ public:
             else {
                 cout << "нехватает маны\n";
             }
-
         }
         else if (abilityName == "Фиолетовый") {
             if (mana >= 25) {
@@ -62,14 +59,12 @@ public:
             else {
                 cout << "нехватает маны\n";
             }
-
         }
         else {
             cout << "такой способности нет\n";
         }
     }
 };
-
 class Enemy {
 public:
     int hp;
@@ -120,13 +115,16 @@ public:
                 else if (map[y][x] == 42) {
                     cout << "(***)";
                 }
+                else if (map[y][x] == 21) {
+                    cout << "X";
+                }
                 else if (map[y][x] == 69) {
                     cout << "E ";
                 }
                 else {
-                    cout << (char)map[y][x]; 
-//Char это тип данных который используется для представления символов он может быть объявлен как самостоятельная переменная или быть частью массива а также его можно использовать для работы со строками
-// я пытался без char но без него перс просто бесконечно идёт
+                    cout << (char)map[y][x];
+                    //Char это тип данных который используется для представления символов он может быть объявлен как самостоятельная переменная или быть частью массива а также его можно использовать для работы со строками
+                    // я пытался без char но без него перс просто бесконечно идёт
                 }
             }
             cout << "\n";
@@ -151,6 +149,11 @@ public:
 
             if (!inBattle) {
                 movePlayer(input);
+            }
+
+            if (map[player.posY][player.posX] == 'X') {
+                cout << "Вы вошли в магазин\n";
+                nextLocation();
             }
 
             if (map[player.posY][player.posX] == '*') {
@@ -207,7 +210,7 @@ public:
         Enemy enemy;
         while (player.hp > 0 && !enemy.isDead()) {
             cout << "HP врага " << enemy.hp << " | Ваше HP " << player.hp << "\n";
-            cout << "Выберите способность:";
+            cout << "Выберите способность: 1 - простой удар 2 - фаэрболл 3 - хилл 4 - фиолетовый";
             int choice;
             cin >> choice;
 
@@ -254,6 +257,10 @@ public:
         generateMap();
         player.posX = 0;
         player.posY = 0;
+    }
+    void Shop() {
+        (LC_ALL, "Russian");
+        cout << "1Меч души - 200 душ 2ожерелье подовления - 2500 душ\n";
     }
 };
 
