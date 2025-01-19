@@ -122,29 +122,30 @@ public:
                     cout << "E ";
                 }
                 else {
-                    cout << (char)map[y][x];
-                    //Char это тип данных который используется для представления символов он может быть объявлен как самостоятельная переменная или быть частью массива а также его можно использовать для работы со строками
-                    //переменная char хранит числовой код одного символа в качестве значения переменная может принимать один символ в одинарных кавычках либо числовой код символа 
-                    // я пытался без char но без него перс просто бесконечно идёт
+                    cout << static_cast<char>(map[y][x]);
+//Char это тип данных который используется для представления символов он может быть объявлен как самостоятельная переменная или быть частью массива а также его можно использовать для работы со строками
+//переменная char хранит числовой код одного символа в качестве значения переменная может принимать один символ в одинарных кавычках либо числовой код символа 
+// я пытался без char но без него перс просто бесконечно идёт
                 }
             }
             cout << "\n";
         }
     }
     void start() {
-        (LC_ALL, "Russian");
+        setlocale(LC_ALL, "Russian");
         char input;
-        cout << "для передвижения w a s d\n";
-        cout << "на x выход из игры\n";
+        cout << "Для передвижения используйте WASD.\n"
+            << "Для выхода из игры нажмите X.\n";
+
         while (true) {
             displayMap();
-            cout << "хп " << player.hp << "/" << player.maxHp << " | мана " << player.mana << "/" << player.maxMana
-                << " | EXP: " << player.experience << "/100 | уровень " << player.level << "\n";
-            cout << "куда хочешь сходить ";
+            cout << "HP: " << player.hp << "/" << player.maxHp << " | MP: " << player.mana << "/" << player.maxMana
+                << " | EXP: " << player.experience << "/100 | Уровень: " << player.level << "\n";
+            cout << "Куда хотите пойти? ";
             cin >> input;
 
             if (input == 'x') {
-                cout << "покинул игру\n";
+                cout << "Покинули игру.\n";
                 break;
             }
 
@@ -152,24 +153,24 @@ public:
                 movePlayer(input);
             }
 
-            if (map[player.posY][player.posX] == 'X') {
-                cout << "Вы вошли в магазин\n";
+            if (map[player.posY][player.posX] == 88) {
+                cout << "Вы вошли в магазин.\n";
                 nextLocation();
             }
 
-            if (map[player.posY][player.posX] == '*') {
-                cout << "Вы вошли в портал\n";
+            if (map[player.posY][player.posX] == 42) {
+                cout << "Вы вошли в портал.\n";
                 nextLocation();
             }
-            else if (map[player.posY][player.posX] == 'E') {
-                cout << "ты встретился взглядом с противником\n";
+            else if (map[player.posY][player.posX] == 69) {
+                cout << "Вы встретились с врагом!\n";
                 startBattle();
             }
         }
     }
 
     void movePlayer(int input) {
-        (LC_ALL, "Russian");
+        setlocale(LC_ALL, "Russian");
         int newX = player.posX;
         int newY = player.posY;
 
@@ -187,7 +188,7 @@ public:
             newX++;
             break;
         default:
-            cout << "Так ходить нельзя\n";
+            cout << "Невозможно двигаться в этом направлении.\n";
             return;
         }
 
@@ -197,21 +198,21 @@ public:
                 player.posY = newY;
             }
             else {
-                cout << "Вы не можете туда пойти\n";
+                cout << "Вы не можете пройти через стену.\n";
             }
         }
         else {
-            cout << "Вы не можете выйти за границы карты\n";
+            cout << "Вы не можете покинуть пределы карты.\n";
         }
     }
 
     void startBattle() {
-        (LC_ALL, "Russian");
+        setlocale(LC_ALL, "Russian");
         inBattle = true;
         Enemy enemy;
         while (player.hp > 0 && !enemy.isDead()) {
             cout << "HP врага " << enemy.hp << " | Ваше HP " << player.hp << "\n";
-            cout << "Выберите способность: 1 - простой удар 2 - фаэрболл 3 - хилл 4 - фиолетовый";
+            cout << "Выберите способность: 1 - простой удар 2 - фаэрболл 3 - хилл 4 - фиолетовый\n";
             int choice;
             cin >> choice;
 
@@ -232,7 +233,7 @@ public:
                 }
             }
             else if (choice == 5) {
-                player.useAbility("прописать двоечку");
+                player.useAbility("Прописать двоечку");
                 if (player.mana >= 1) {
                     enemy.hp -= 999;
                 }
@@ -265,15 +266,15 @@ public:
     }
 
     void nextLocation() {
-        (LC_ALL, "Russian");
+        setlocale(LC_ALL, "Russian");
         cout << "Телепортация на следующий этаж\n";
         generateMap();
         player.posX = 0;
         player.posY = 0;
     }
     void Shop() {
-        (LC_ALL, "Russian");
-        cout << "1Меч души - 200 душ 2ожерелье подовления - 2500 душ\n";
+        setlocale(LC_ALL, "Russian");
+        cout << "1 Меч души - 200 душ\n2 Ожерелье подовления - 2500 душ\n";
     }
 };
 
